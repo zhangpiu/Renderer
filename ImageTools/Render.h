@@ -36,12 +36,12 @@ public:
 
 	static Matrix<uint8> rayTrace(const Geometry& scene, const PerspectiveCamera& camera, const Size& size);
 
-	static Matrix<uint8> rayTraceReflection(const Geometry& scene, const PerspectiveCamera& camera, int maxReflect, const Size& size);
+	static Matrix<uint8> rayTraceReflection(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, int maxReflect, const Size& size);
 
 	static Matrix<uint8> renderLight(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, const Size& size);
 
 private:
-	static Color rayTraceRecursive(const Geometry& scene, const Ray3D& ray, int maxReflect);
+	static Color rayTraceRecursive(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const Ray3D& ray, int maxReflect);
 
 };
 
@@ -115,7 +115,7 @@ Matrix<uint8> Render::rayTrace(const Geometry& scene, const PerspectiveCamera& c
 			const IntersectResult result = scene.intersect(ray);
 
 			if (result.getGeometry()) {
-				const Color clr = result.getGeometry()->getMaterial()->sample(ray, result.getPosition(), result.getNormal());
+				const Color clr; //= result.getGeometry()->getMaterial()->sample(ray, result.getPosition(), result.getNormal());
 
 				m(i, j, 0) = (uint8)Math::clip(clr.r() * 255, 0.0, 255.0);
 				m(i, j, 1) = (uint8)Math::clip(clr.g() * 255, 0.0, 255.0);
@@ -130,13 +130,19 @@ Matrix<uint8> Render::rayTrace(const Geometry& scene, const PerspectiveCamera& c
 
 
 
-Color Render::rayTraceRecursive(const Geometry& scene, const Ray3D& ray, int maxReflect) {
+Color Render::rayTraceRecursive(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const Ray3D& ray, int maxReflect) {
 	const auto result = scene.intersect(ray);
 
 	if (result.getGeometry()) {
 		const auto material = result.getGeometry()->getMaterial();
 		const double reflectiveness = material->getReflectiveness();
-		Color clr = material->sample(ray, result.getPosition(), result.getNormal());
+		vector<LightSample> lightSamples;
+
+		for (auto& light : lights) {
+			lightSamples.emplace_back(light->sample(scene, result.getPosition()));
+		}
+
+		Color clr = material->sample(ray, lightSamples, result.getPosition(), result.getNormal());
 
 		clr *= 1 - reflectiveness;
 
@@ -144,7 +150,7 @@ Color Render::rayTraceRecursive(const Geometry& scene, const Ray3D& ray, int max
 			const Vector3D& d = ray.getDirection();
 			const Vector3D& n = result.getNormal();
 			const Vector3D r = d - 2 * (d.dot(n)) * n;
-			const Color reflectedClr = rayTraceRecursive(scene, Ray3D(result.getPosition(), r), maxReflect-1);
+			const Color reflectedClr = rayTraceRecursive(scene, lights, Ray3D(result.getPosition(), r), maxReflect-1);
 
 			clr += reflectedClr * reflectiveness;
 		}
@@ -156,7 +162,7 @@ Color Render::rayTraceRecursive(const Geometry& scene, const Ray3D& ray, int max
 }
 
 
-Matrix<uint8> Render::rayTraceReflection(const Geometry& scene, const PerspectiveCamera& camera, int maxReflect, const Size& size) {
+Matrix<uint8> Render::rayTraceReflection(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, int maxReflect, const Size& size) {
 	Matrix<uint8> m(size);
 
 	const int height = m.height();
@@ -168,7 +174,7 @@ Matrix<uint8> Render::rayTraceReflection(const Geometry& scene, const Perspectiv
 		for (int j = 0; j < width; ++j) {
 			const double sx = j / double(width);
 			const Ray3D ray = camera.generateRay(sx, sy);
-			const Color clr = rayTraceRecursive(scene, ray, maxReflect);
+			const Color clr = rayTraceRecursive(scene, lights, ray, maxReflect);
 			const auto c = convert2Int(clr);
 
 			m(i, j, 0) = std::get<0>(c);

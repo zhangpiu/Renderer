@@ -22,6 +22,7 @@
 #include "Ray3D.h"
 #include "Vector3D.h"
 #include "Color.h"
+#include "LightSample.h"
 
 class Material {
 public:
@@ -33,7 +34,7 @@ public:
 
 	virtual ~Material(){}
 
-	virtual Color sample(const Ray3D& ray, const Vector3D& position, const Vector3D& normal) const = 0;
+	virtual Color sample(const Ray3D& ray, const vector<LightSample>& lightSamples, const Vector3D& position, const Vector3D& normal) const = 0;
 
 	double getShininess() const { return _shininess; }
 

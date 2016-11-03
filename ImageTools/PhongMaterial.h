@@ -31,7 +31,7 @@ public:
 		, _specular(specular)
 	{}
 
-	virtual Color sample(const Ray3D& ray, const Vector3D& position, const Vector3D& normal) const;
+	virtual Color sample(const Ray3D& ray, const vector<LightSample>& lightSamples, const Vector3D& position, const Vector3D& normal) const;
 
 private:
 	Color _diffuse, _specular;
@@ -39,17 +39,26 @@ private:
 
 
 // Global illumination
-const Vector3D lightDir = Vector3D(1,1,1.5).normalize();
+const Vector3D lightDir = Vector3D(1, 0, 2).normalize();
+const Vector3D lightDir2 = Vector3D(1, 0, 0).normalize();
 const Color lightColor = Color::WHITE;
 
-Color PhongMaterial::sample(const Ray3D& ray, const Vector3D& position, const Vector3D& normal) const {
+const vector<Vector3D> lights{lightDir, lightDir2};
+
+Color PhongMaterial::sample(const Ray3D& ray, const vector<LightSample>& lightSamples, const Vector3D& position, const Vector3D& normal) const {
 	
 	// Using Phong Model
-	const double NdotL = normal.dot(lightDir);
-	const Vector3D H = (lightDir - ray.getDirection()).normalize();
-	const double NdotH = normal.dot(H);
-	const Color diffuseTerm = _diffuse   * std::max(NdotL, 0.0);
-	const Color specularTerm = _specular * std::pow(std::max(NdotH, 0.0), _shininess);
+	Color clr;
 
-	return lightColor.modulate(diffuseTerm + specularTerm);
+	for (auto& lightSample : lightSamples) {
+		const double NdotL = normal.dot(lightSample.L());
+		const Vector3D H = (lightSample.L() - ray.getDirection()).normalize();
+		const double NdotH = normal.dot(H);
+		const Color diffuseTerm = _diffuse   * std::max(NdotL, 0.0);
+		const Color specularTerm = _specular * std::pow(std::max(NdotH, 0.0), _shininess);
+
+		clr += lightSample.EL().modulate(diffuseTerm + specularTerm);
+	}
+
+	return clr;
 }

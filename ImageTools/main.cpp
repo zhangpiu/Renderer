@@ -82,12 +82,14 @@ void reflectionTest() {
 	sphere3->setMaterial(make_shared<PhongMaterial>(Color::GREEN, Color(0.75, 0.75, 0.75), 16, 0));
 	  
 	UnionGeometry geometries({sphere3, sphere1, sphere2, plane});
-	 
-	 
+	
+	vector<shared_ptr<Light>> lights{ make_shared<SpotLight>(Color::WHITE*10000, Vector3D(20,0, 80), Vector3D(-1, 0, -1), 80, 90, 1) };
+	
 	int s = 512;
 	 
 	Matrix<uint8> mat = Render::rayTraceReflection(geometries, 
-	 									PerspectiveCamera(Vector3D(15,10,5), Vector3D(-1,-0.3,0), Vector3D(0,0,1), 90),
+										lights,
+	 									PerspectiveCamera(Vector3D(15,0,5), Vector3D(-1,0,0), Vector3D(0,0,1), 90),
 	 									5,
 	 									Size(s, s, 3));
 	 
@@ -113,10 +115,12 @@ void planeTest() {
 
 	UnionGeometry geometries({ plane1, plane2, plane3, sphere1 });
 
+	vector<shared_ptr<Light>> lights{ make_shared<DirectionalLight>(Color::WHITE, Vector3D(-1, -1, -1)) };
 
 	int s = 512;
 
 	Matrix<uint8> mat = Render::rayTraceReflection(geometries,
+												   lights,
 												   PerspectiveCamera(Vector3D(40, 20, 15), Vector3D(-1, -0.1, 0), Vector3D(0, 0, 1), 90),
 												   5,
 												   Size(s, s, 3));
@@ -151,9 +155,40 @@ void renderRGBTest() {
 	PXMImage::save(mat, "E:\\render.ppm", ImageType::P6);
 }
 
+
+void render36LightsTest() {
+	UnionGeometry geometries({
+		make_shared<Plane>(Vector3D(0, 1, 0), 0),
+		make_shared<Plane>(Vector3D(0, 0, 1), -50),
+		make_shared<Plane>(Vector3D(1, 0, 0), -20),
+		make_shared<Sphere>(Vector3D(0, 10, -10), 10)
+	});
+
+	vector<shared_ptr<Light>> lights;
+
+	for (int x = 10; x <= 30; x += 4) {
+		for (int z = 20; z <= 40; z += 4) {
+			lights.push_back(make_shared<PointLight>(Color::WHITE * 80, Vector3D(x, 50, z)));
+		}
+	}
+
+	auto fillLight = make_shared<DirectionalLight>(Color::WHITE*0.25, Vector3D(1.5, 1, 0.5));
+	lights.push_back(fillLight);
+
+
+	int s = 512;
+	Matrix<uint8> mat =
+		Render::renderLight(geometries,
+		lights,
+		PerspectiveCamera(Vector3D(0, 10, 10), Vector3D(0, 0, -1), Vector3D(0, 1, 0), 90),
+		Size(s, s, 3));
+
+	PXMImage::save(mat, "E:\\render.ppm", ImageType::P6);
+}
+
 int main(){
 
-	renderRGBTest();
+	planeTest();
 
 
 	return 0;
