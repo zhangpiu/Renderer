@@ -19,9 +19,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-class Color {
-public:
-
+struct Color {
 	static const Color BLACK;
 
 	static const Color WHITE;
@@ -32,9 +30,9 @@ public:
 
 	static const Color BLUE;
 
-	Color() : _r(0), _g(0), _b(0) {}
+	Color() : r(0), g(0), b(0) {}
 
-	Color(double r, double g, double b) : _r(r), _g(g), _b(b) {}
+	Color(double r, double g, double b) : r(r), g(g), b(b) {}
 
 	// Add
 	Color& operator += (const Color& rhs);
@@ -51,22 +49,15 @@ public:
 	// Modulate
 	Color modulate(const Color& rhs) const;
 
-	double r() const { return _r; }
+	friend uint8 convert(double channel, double alpha = 1.0);
 
-	double g() const { return _g; }
-
-	double b() const { return _b; }
-
-	friend std::tuple<uint8, uint8, uint8> convert2Int(const Color& clr);
-
-private:
-	double _r, _g, _b;
+	double r, g, b;
 };
 
 Color& Color::operator += (const Color& rhs) {
-	_r += rhs._r;
-	_g += rhs._g;
-	_b += rhs._b;
+	r += rhs.r;
+	g += rhs.g;
+	b += rhs.b;
 	return *this;
 }
 
@@ -77,9 +68,9 @@ Color operator + (const Color& lhs, const Color& rhs) {
 }
 
 Color& Color::operator *= (double value) {
-	_r *= value;
-	_g *= value;
-	_b *= value;
+	r *= value;
+	g *= value;
+	b *= value;
 	return *this;
 }
 
@@ -96,16 +87,13 @@ Color operator * (double value, const Color& rhs) {
 
 
 Color Color::modulate(const Color& rhs) const {
-	return Color(_r*rhs._r, _g*rhs._g, _b*rhs._b);
+	return Color(r*rhs.r, g*rhs.g, b*rhs.b);
 }
 
+uint8 convert(double channel, double alpha /* = 1.0 */) {
+	channel = Math::clip(channel, 0.0, 1.0);
 
-std::tuple<uint8, uint8, uint8> convert2Int(const Color& clr) {
-	uint8 r = (uint8)Math::clip(clr.r() * 255, 0.0, 255.0);
-	uint8 g = (uint8)Math::clip(clr.g() * 255, 0.0, 255.0);
-	uint8 b = (uint8)Math::clip(clr.b() * 255, 0.0, 255.0);
-
-	return std::make_tuple(r,g,b);
+	return uint8(std::pow(channel, 1 / alpha) * 255 + .5);
 }
 
 

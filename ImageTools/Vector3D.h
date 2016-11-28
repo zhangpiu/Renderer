@@ -29,35 +29,92 @@ public:
 
 	Vector3D(double x, double y, double z) : _x(x), _y(y), _z(z) {}
 
-	static Vector3D zero;
+	static Vector3D Zero;
+
+	static Vector3D Xaxis;
+
+	static Vector3D Yaxis;
+
+	static Vector3D Zaxis;
 
 	// add
-	Vector3D& operator += (const Vector3D& rhs);
+	Vector3D& operator += (const Vector3D& rhs) {
+		_x += rhs._x; _y += rhs._y; _z += rhs._z;
+		return *this;
+	}
 
-	friend Vector3D operator + (const Vector3D& lhs, const Vector3D& rhs);
+	inline friend Vector3D operator + (const Vector3D& lhs, const Vector3D& rhs) {
+		Vector3D ret(lhs);
+		return ret += rhs;
+	}
 
 	// subtract
-	Vector3D& operator -= (const Vector3D& rhs);
+	Vector3D& operator -= (const Vector3D& rhs) {
+		_x -= rhs._x; _y -= rhs._y; _z -= rhs._z;
+		return *this;
+	}
 
-	friend Vector3D operator - (const Vector3D& lhs, const Vector3D& rhs);
+	inline friend Vector3D operator - (const Vector3D& lhs, const Vector3D& rhs) {
+		Vector3D ret(lhs);
+		return ret -= rhs;
+	}
 
 	// multiply
-	Vector3D& operator *= (double value);
+	Vector3D& operator *= (double value) {
+		_x *= value; _y *= value; _z *= value;
+		return *this;
+	}
 
-	friend Vector3D operator * (const Vector3D& lhs, double value);
+	inline friend Vector3D operator * (const Vector3D& lhs, double value) {
+		Vector3D ret(lhs);
+		return ret *= value;
+	}
 
-	friend Vector3D operator * (double value, const Vector3D& rhs);
+	inline friend Vector3D operator * (double value, const Vector3D& rhs) {
+		return rhs * value;
+	}
 
 	// divide
-	Vector3D& operator /= (double value);
+	Vector3D& operator /= (double value) {
+		double inv = 1.0 / value;
+		_x *= inv; _y *= inv; _z *= inv;
+		return *this;
+	}
 
-	friend Vector3D operator / (const Vector3D& lhs, double value);
+	inline friend Vector3D operator / (const Vector3D& lhs, double value) {
+		Vector3D ret(lhs);
+		return ret /= value;
+	}
 
 	// dot
-	double dot(const Vector3D& rhs) const;
+	double dot(const Vector3D& rhs) const {
+		return _x*rhs._x + _y*rhs._y + _z*rhs._z;
+	}
+
+	double operator % (const Vector3D& rhs) const {
+		return dot(rhs);
+	}
 
 	// cross
-	Vector3D cross(const Vector3D& rhs);
+	Vector3D cross(const Vector3D& rhs) const {
+		double x = _y*rhs._z - _z*rhs._y;
+		double y = _z*rhs._x - _x*rhs._z;
+		double z = _x*rhs._y - _y*rhs._x;
+		return Vector3D(x, y, z);
+	}
+
+	Vector3D& operator ^= (const Vector3D& rhs) {
+		double x = _y*rhs._z - _z*rhs._y;
+		double y = _z*rhs._x - _x*rhs._z;
+		double z = _x*rhs._y - _y*rhs._x;
+		_x = x; _y = y; _z = z;
+		return *this;
+	}
+
+	inline friend Vector3D operator ^ (const Vector3D& lhs, const Vector3D& rhs) {
+		Vector3D ret(lhs);
+		return ret ^= rhs;
+	}
 
 	// output
 	friend std::ostream& operator << (std::ostream& os, const Vector3D& rhs);
@@ -66,7 +123,7 @@ public:
 	
 	double sqrLength() const { return _x*_x + _y*_y + _z*_z; }
 	
-	Vector3D normalize() const {
+	Vector3D norm() const {
 		double inv = 1.0 / length();
 		return Vector3D(_x*inv, _y*inv, _z*inv);
 	}
@@ -83,83 +140,13 @@ private:
 	double _x, _y, _z;
 };
 
-Vector3D Vector3D::zero = Vector3D(0,0,0);
+Vector3D Vector3D::Zero = Vector3D(0,0,0);
 
-Vector3D& Vector3D::operator += (const Vector3D& rhs) {
-	_x += rhs._x;
-	_y += rhs._y;
-	_z += rhs._z;
-	return *this;
-}
+Vector3D Vector3D::Xaxis = Vector3D(1,0,0);
 
+Vector3D Vector3D::Yaxis = Vector3D(0,1,0);
 
-Vector3D operator + (const Vector3D& lhs, const Vector3D& rhs) {
-	Vector3D ret(lhs);
-	ret += rhs;
-	return ret;
-}
-
-
-Vector3D& Vector3D::operator -= (const Vector3D& rhs) {
-	_x -= rhs._x;
-	_y -= rhs._y;
-	_z -= rhs._z;
-	return *this;
-}
-
-Vector3D operator - (const Vector3D& lhs, const Vector3D& rhs) {
-	Vector3D ret(lhs);
-	ret -= rhs;
-	return ret;
-}
-
-Vector3D& Vector3D::operator *= (double value) {
-	_x *= value;
-	_y *= value;
-	_z *= value;
-	return *this;
-}
-
-
-Vector3D operator * (const Vector3D& lhs, double value) {
-	Vector3D ret(lhs);
-	ret *= value;
-	return ret;
-}
-
-
-Vector3D operator * (double value, const Vector3D& rhs) {
-	return rhs * value;
-}
-
-
-Vector3D& Vector3D::operator /= (double value) {
-	double inv = 1.0/value;
-	_x *= inv;
-	_y *= inv;
-	_z *= inv;
-	return *this;
-}
-
-
-Vector3D operator / (const Vector3D& lhs, double value) {
-	Vector3D ret(lhs);
-	ret /= value;
-	return ret;
-}
-
-
-double Vector3D::dot (const Vector3D& rhs) const{
-	return _x*rhs._x + _y*rhs._y + _z*rhs._z;
-}
-
-Vector3D Vector3D::cross (const Vector3D& rhs) {
-	const double x = _y*rhs._z - _z*rhs._y;
-	const double y = _z*rhs._x - _x*rhs._z;
-	const double z = _x*rhs._y - _y*rhs._x;
-
-	return Vector3D(x,y,z);
-}
+Vector3D Vector3D::Zaxis = Vector3D(0,0,1);
 
 
 // output

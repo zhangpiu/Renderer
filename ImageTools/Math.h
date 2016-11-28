@@ -29,6 +29,11 @@ public:
 	static inline T clip(const T& x, const T& low, const T& high) {
 		return x < low ? low : (x > high ? high : x);
 	}
+
+	template<typename T>
+	static inline T max3(const T& a, const T& b, const T& c) {
+		return std::max(a, std::max(b, c));
+	}
 };
 
-const double Math::PI = 3.14159265358979323846;
+const double Math::PI = 3.141592653589793238462643;

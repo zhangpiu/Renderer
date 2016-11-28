@@ -1,3 +1,14 @@
+#########################################
+# by vodka. 2016.11.28
+*.psess
+*.vsp
+*.opensdf
+*.log
+
+#########################################
+# Origin configurations
+#
+
 # Compiled Object files
 *.slo
 *.lo

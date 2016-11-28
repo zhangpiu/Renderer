@@ -43,21 +43,23 @@ private:
 
 
 IntersectResult Sphere::intersect(const Ray3D& ray) const {
-	const Vector3D v = ray.getOrigin() - _center;
-	const double a = v.sqrLength() - _sqrRadius;
-	const double d_dot_v = ray.getDirection().dot(v);
+	// Solve t^2*d.d + 2*t*(o-c).d + (o-c).(o-c)-R^2 = 0; o: ray's origin, c: sphere's center
+	Vector3D oc =  ray.getOrigin() - _center;
+	double b = oc.dot(ray.getDirection());
+	double det = b * b - oc.dot(oc) + _sqrRadius; // (b^2 - 4ac) / 4
+	const double eps = 1e-6;
 
-	if (d_dot_v <= 0) {
-		const double discr = d_dot_v*d_dot_v - a;
+	if (det < 0) return IntersectResult::noHit;
+	
+	double dets = std::sqrt(det);
+	double distance = 0;
 
-		if (discr >= 0) {
-			const double distance = -d_dot_v-std::sqrt(discr);
-			const Vector3D position = ray.getPoint(distance);
-			const Vector3D normal = (position - _center).normalize();
+	if (-b - dets > eps) distance = -b - dets;
+	else if (-b + dets > eps) distance = -b + dets;
+	else return IntersectResult::noHit;
 
-			return IntersectResult(shared_from_this(), distance, position, normal);
-		}
-	}
+	const Vector3D position = ray.getPoint(distance);
+	const Vector3D normal = (position - _center).norm();
 
-	return IntersectResult::noHit;
+	return IntersectResult(this, distance, position, normal);
 }

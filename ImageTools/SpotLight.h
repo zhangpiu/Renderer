@@ -14,7 +14,7 @@ public:
 		, _phi(phi)
 		, _falloff(falloff)
 		, _shadow(true) {
-		_S = _direction.normalize().negate();
+		_S = _direction.norm().negate();
 		_cosTheta = std::cos(_theta * Math::PI * 0.5 / 180);
 		_cosPhi = std::cos(_phi * Math::PI * 0.5 / 180);
 		_baseMultiplier = 1 / (_cosTheta - _cosPhi);

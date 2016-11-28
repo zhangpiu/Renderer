@@ -29,12 +29,12 @@ public:
 		, _scale(scale)
 	{}
 
-	virtual Color sample(const Ray3D& ray, const vector<LightSample>& lightSamples, const Vector3D& position, const Vector3D& normal) const;
+	virtual Color sample(const Ray3D& ray, const LightSample& lightSample, const Vector3D& position, const Vector3D& normal) const;
 
 private:
 	double _scale;
 };
 
-Color CheckerMaterial::sample(const Ray3D& ray, const vector<LightSample>& lightSamples, const Vector3D& position, const Vector3D& normal) const {
+Color CheckerMaterial::sample(const Ray3D& ray, const LightSample& lightSample, const Vector3D& position, const Vector3D& normal) const {
 	return std::abs((int)(std::floor(position.x() * 0.1) + std::floor(position.y() * _scale)) % 2) < 1 ? Color::BLACK : Color::WHITE;
 }

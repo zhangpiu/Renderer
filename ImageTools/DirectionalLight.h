@@ -14,7 +14,7 @@ public:
 		: _irradiance(irradiance)
 		, _direction(direction)
 		, _shadow(true) {
-		_l = _direction.normalize().negate();
+		_l = _direction.norm().negate();
 	}
 
 	virtual LightSample sample(const Geometry& scene, const Vector3D& position) const;

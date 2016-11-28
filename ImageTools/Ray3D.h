@@ -28,7 +28,7 @@ public:
 		, _direction(direction)
 	{}
 
-	Vector3D getPoint(double t) const { return _origin + _direction*t; }
+	Vector3D getPoint(double t) const { return (_direction*t) += _origin; }
 
 	const Vector3D& getOrigin() const { return _origin; }
 

@@ -21,4 +21,4 @@ private:
 	Color _el;
 };
 
-const LightSample LightSample::zero = LightSample(Vector3D::zero, Color::BLACK);
+const LightSample LightSample::zero = LightSample(Vector3D::Zero, Color::BLACK);

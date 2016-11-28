@@ -17,7 +17,7 @@ public:
 
 	static Matrix<uint8> open(const string& filepath);
 
-	static void save(const Matrix<uint8>& mat, const string& filepath, const ImageType& type, bool ascii = false);
+	static void save(const Matrix<uint8>& mat, const string& filepath, const ImageType& type = ImageType::P6, bool ascii = false);
 
 private:
 	struct Header {

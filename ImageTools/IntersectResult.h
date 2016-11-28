@@ -26,12 +26,13 @@ class Geometry;
 class IntersectResult {
 public:
 	IntersectResult()
-		: _distance(0)
-		, _position(Vector3D::zero)
-		, _normal(Vector3D::zero)
+		: _geometry(nullptr)
+		, _distance(std::numeric_limits<double>::max())
+		, _position(Vector3D::Zero)
+		, _normal(Vector3D::Zero)
 	{}
 
-	IntersectResult(const shared_ptr<const Geometry>& geometry, double distance, const Vector3D& position, const Vector3D& normal)
+	IntersectResult(const Geometry* geometry, double distance, const Vector3D& position, const Vector3D& normal)
 		: _geometry(geometry)
 		, _distance(distance)
 		, _position(position)
@@ -40,9 +41,9 @@ public:
 
 	static const IntersectResult noHit;
 
-	shared_ptr<const Geometry> getGeometry() const { return _geometry; }
+	const Geometry* getGeometry() const { return _geometry; }
 
-	void setGeometry(const shared_ptr<const Geometry>& geometry) { _geometry = geometry; }
+	void setGeometry(const Geometry* geometry) { _geometry = geometry; }
 
 	double getDistance() const { return _distance; }
 
@@ -57,7 +58,7 @@ public:
 	void setNormal(const Vector3D& normal) { _normal = normal; }
 
 private:
-	shared_ptr<const Geometry> _geometry;
+	const Geometry* _geometry;
 	double _distance;
 	Vector3D _position, _normal;
 };

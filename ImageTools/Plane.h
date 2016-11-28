@@ -10,14 +10,12 @@ public:
 		: Geometry(material)
 		,_normal(normal)
 		, _position(normal*d)
-		, _d(d)
 	{}
 
 	virtual IntersectResult intersect(const Ray3D& ray) const;
 
 private:
 	Vector3D _normal, _position;
-	double _d;
 };
 
 
@@ -28,9 +26,11 @@ IntersectResult Plane::intersect(const Ray3D& ray) const {
 	const double b = _normal.dot(ray.getOrigin() - _position);
 
 	IntersectResult result;
-	result.setGeometry(shared_from_this());
-	result.setDistance(-b/a);
-	result.setPosition(ray.getPoint(result.getDistance()));
+	double dist = -b/a;
+
+	result.setGeometry(this);
+	result.setDistance(dist);
+	result.setPosition(ray.getPoint(dist));
 	result.setNormal(_normal);
 
 	return result;
