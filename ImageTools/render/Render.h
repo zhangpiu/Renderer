@@ -23,7 +23,7 @@
 #include "PerspectiveCamera .h"
 #include "Matrix.h"
 #include "Color.h"
-#include "Math.h"
+#include "MyMath.h"
 #include "Light.h"
 #include "IdealMaterial.h"
 #include "UnionGeometry.h"

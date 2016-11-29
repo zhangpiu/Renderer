@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include <iostream>
-#include "String.h"
+#include "MyString.h"
 
 class Vector3D {
 public:

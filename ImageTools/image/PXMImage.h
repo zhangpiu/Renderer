@@ -6,8 +6,8 @@
 #include <fstream>
 
 #include "ImageType.h"
-#include "String.h"
-#include "Exception.h"
+#include "MyString.h"
+#include "MyException.h"
 #include "Matrix.h"
 
 using namespace std;

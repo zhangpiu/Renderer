@@ -20,7 +20,7 @@
 #pragma once
 
 #include "Vector3D.h"
-#include "Math.h"
+#include "MyMath.h"
 #include "Ray3D.h"
 
 class PerspectiveCamera {
