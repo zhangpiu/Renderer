@@ -8,6 +8,7 @@
 *.pdb
 *.idb
 *.ilk
+*.sdf
 
 #########################################
 # Origin configurations

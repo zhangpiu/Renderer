@@ -1,29 +1,17 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (C)  2015-2017, IVLab.
+// Copyright (C)  2016-2099, ZJU.
 // 
 // File name:     GaussianKernel.h
 // 
-// Author:        Vodka
+// Author:        Piu Zhang
 // 
 // Version:       V1.0
 // 
-// Date:          2016.10.11
+// Date:          2016.10.28
 // 
-// Description:   
+// Description:   Gaussian kernel generator.
+//
 // 
-// Others: 
-//
-// Example:      
-//
-//               
-// Function List:
-//
-//                1.
-//                2. 
-// History: 
-// 
-// Modification:
-// 2. ...
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 

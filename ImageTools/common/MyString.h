@@ -1,3 +1,19 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (C)  2016-2099, ZJU.
+// 
+// File name:     MyString.h
+// 
+// Author:        Piu Zhang
+// 
+// Version:       V1.0
+// 
+// Date:          2016.10.28
+// 
+// Description:   String format tools.   
+//
+// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include <cstdarg>   // For va_start, etc.
@@ -29,7 +45,11 @@ private:
 	std::string _str;
 };
 
-
+/*
+ * The 'formatString' is passed by value to conform with the requirements of va_start.
+ * 
+ * stack overflow: http://stackoverflow.com/questions/2342162/stdstring-formatting-like-sprintf
+**/
 String String::format(const std::string formatString, ...) {
 	int final_n, n = ((int)formatString.size()) * 2; /* Reserve two times as much as the length of the formatString */
 	std::string str;
