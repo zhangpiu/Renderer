@@ -34,7 +34,7 @@ public:
 
 	virtual ~Geometry(){}
 
-	std::shared_ptr<Material> getMaterial() const { return _material; }
+	const std::shared_ptr<Material>& getMaterial() const { return _material; }
 
 	void setMaterial(const std::shared_ptr<Material>& material) { _material = material; }
 

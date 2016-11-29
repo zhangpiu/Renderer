@@ -102,6 +102,8 @@ public:
 
 	int bytes()   const { return _length*sizeof(T);}
 
+	T* data() const { return _data; }
+
 	friend Size size(const Matrix<T>& m);
 
 	bool identical(const Matrix<T>& rhs) const { return this == &rhs; }

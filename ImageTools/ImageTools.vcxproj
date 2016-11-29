@@ -146,6 +146,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="GaussianKernel.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="IdealMaterial.h" />
     <ClInclude Include="IntersectResult.h" />

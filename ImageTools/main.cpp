@@ -292,17 +292,17 @@ void globalIlluminationTest() {
 	auto plane3 = make_shared<Plane>(Vector3D(0, 1, 0),  -60);  // left
 	auto plane4 = make_shared<Plane>(Vector3D(0, -1, 0), -60); // right
 	auto plane5 = make_shared<Plane>(Vector3D(0, 0, -1), -100); // ceil
-	auto plane6 = make_shared<Plane>(Vector3D(-1, 0, 0), 0);   // front
+	auto plane6 = make_shared<Plane>(Vector3D(-1, 0, 0), -20);   // front
 
 	plane1->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.75, 0.75), Color::BLACK, IdealType::DIFFUSE));
 	plane2->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.75, 0.75), Color::BLACK, IdealType::DIFFUSE));
 	plane3->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.25, 0.25), Color::BLACK, IdealType::DIFFUSE));
 	plane4->setMaterial(make_shared<IdealMaterial>(Color(0.25, 0.25, 0.75), Color::BLACK, IdealType::DIFFUSE));
 	plane5->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.75, 0.75), Color::BLACK, IdealType::DIFFUSE));
-	plane6->setMaterial(make_shared<IdealMaterial>(Color(0.50, 0.75, 0.50), Color::BLACK, IdealType::DIFFUSE));
+	plane6->setMaterial(make_shared<IdealMaterial>(Color(0.50, 0.84, 0.81), Color::BLACK, IdealType::DIFFUSE));
 
-	auto sphere1 = make_shared<Sphere>(Vector3D(-70, -30, 20), 20);
-	auto sphere2 = make_shared<Sphere>(Vector3D(-50, 20, 20), 20);
+	auto sphere1 = make_shared<Sphere>(Vector3D(-60, -27.5, 20), 20);
+	auto sphere2 = make_shared<Sphere>(Vector3D(-45, 30, 20), 20);
 	auto sphere3 = make_shared<Sphere>(Vector3D(-50, 0, 100 + 97), 100); // light
 
 	sphere1->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::SPECULAR));
@@ -311,13 +311,13 @@ void globalIlluminationTest() {
 
 	UnionGeometry geometries({ plane1, plane2, plane3, plane4, plane5, plane6, sphere1, sphere2, sphere3 });
 
-	int w = 400;
-	int h = 300;
+	int w = 1024;
+	int h = 768;
 
 	clock_t start = clock();
 
 	Matrix<uint8> mat = Render::pathTrace(geometries,
-										  PerspectiveCamera(Vector3D(120, 0, 50), Vector3D(-1, 0, 0), Vector3D(0, 0, 1), 40, (1.0 * w) / h),
+										  PerspectiveCamera(Vector3D(150, 0, 50), Vector3D(-1, 0, 0), Vector3D(0, 0, 1), 37, (1.0 * w) / h),
 										  Size(h, w, 3));
 
 	printf("\n%f sec\n", (float)(clock() - start) / CLOCKS_PER_SEC);
@@ -348,7 +348,7 @@ void globalIlluminationAnimation() {
 
 	int frame = 3;
 
-	for (int i = 5; i < frame; ++i) {
+	for (int i = 0; i < frame; ++i) {
 		double radius = std::sqrt(50*50 + 80*80);
 		double theta = 30 + i * 50.0 / (frame-1 + 1e-10);
 		double x = -100 + radius * std::cos(theta * Math::PI / 180);
@@ -377,11 +377,17 @@ void globalIlluminationAnimation() {
 
 int main(){
 
-	globalIlluminationAnimation();
+	globalIlluminationTest();
 	//boxAndSphereTest();
 
 	//test();
 
+// 	Matrix<uint8> im = PXMImage::open("E:\\render.ppm");
+// 
+// 	IP::bilateralBlurYang(im, im, 10, 10, 50);
+// 
+// 	PXMImage::save(im, "E:\\render_.ppm");
+	
 
 	return 0;
 }

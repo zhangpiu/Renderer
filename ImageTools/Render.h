@@ -31,6 +31,8 @@
 #include <algorithm>
 #include <ctime>
 #include <random>
+#include <array>
+
 
 class Random {
 	std::mt19937 _mt;
@@ -40,8 +42,8 @@ public:
 
  	Random() 
  		: _mt(std::random_device()())
- 		, _dist(0, 1.0)
- 	{}
+ 		, _dist(0, 1.0) {
+	}
  
  	double operator()() {
  		return _dist(_mt);
@@ -260,7 +262,7 @@ Color Render::pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int de
 	// if miss, return black.
 	if (result.getGeometry() == nullptr) return Color::BLACK;
 
-	const auto material = result.getGeometry()->getMaterial();
+	const auto& material = result.getGeometry()->getMaterial();
 	const Color& emission = material->getEmission();
 	const Color& color = material->getColor();
 	const IdealType& type = material->getIdealType();
@@ -341,18 +343,14 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
 
 	const int height = m.height();
 	const int width = m.width();
-
+	Random rand;
 
 	for (int i = 0; i < height; ++i) {
-		const double y = 1 - i / double(height);
-		Random rand;
-
 		fprintf(stderr,"\rRendering %5.2f%%",100.*i/(height-1));
 
 #pragma omp parallel for
 		for (int j = 0; j < width; ++j) {
-			const double x = j / double(width);
-			Color clr, tmp;
+			Color clr, sum;
 			int samps = 10;
 
  			for (int sy = 0; sy < 2; ++sy) {
@@ -368,13 +366,13 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
  						clr += pathTraceRecursive(scene, ray, 0, rand) * (1.0 / samps);
  					}
  
- 					tmp += Color(Math::clip(clr.r, .0, 1.0), Math::clip(clr.g, .0, 1.0), Math::clip(clr.b, .0, 1.0)) * .25;
+ 					sum += Color(Math::clip(clr.r, .0, 1.0), Math::clip(clr.g, .0, 1.0), Math::clip(clr.b, .0, 1.0)) * .25;
  				}
  			}
 
-			m(i, j, 0) = convert(tmp.r);
-			m(i, j, 1) = convert(tmp.g);
-			m(i, j, 2) = convert(tmp.b);
+			m(i, j, 0) = convert(sum.r);
+			m(i, j, 1) = convert(sum.g);
+			m(i, j, 2) = convert(sum.b);
 		}
 	}
 

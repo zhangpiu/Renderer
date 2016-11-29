@@ -4,6 +4,10 @@
 *.vsp
 *.opensdf
 *.log
+*.tlog
+*.pdb
+*.idb
+*.ilk
 
 #########################################
 # Origin configurations
