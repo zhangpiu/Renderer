@@ -68,15 +68,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\win32\Debug\</OutDir>
+    <IntDir>$(SolutionDir)\win32\Debug\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\win32\Release\</OutDir>
+    <IntDir>$(SolutionDir)\win32\Release\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,11 +90,14 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>image;render;common</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories />
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -97,11 +106,14 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>render;image;common</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories />
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,16 +121,22 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>image;render;common</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories />
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,43 +151,48 @@
       <OpenMPSupport>true</OpenMPSupport>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>image;render;common</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories />
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CheckerMaterial .h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="DirectionalLight.h" />
-    <ClInclude Include="Exception.h" />
-    <ClInclude Include="GaussianKernel.h" />
-    <ClInclude Include="Geometry.h" />
-    <ClInclude Include="IdealMaterial.h" />
-    <ClInclude Include="IntersectResult.h" />
-    <ClInclude Include="IP.h" />
-    <ClInclude Include="LambertMaterial.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="LightSample.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="PerspectiveCamera .h" />
-    <ClInclude Include="PhongMaterial.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="PointLight.h" />
-    <ClInclude Include="PXMImage.h" />
-    <ClInclude Include="ImageType.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Ray3D.h" />
-    <ClInclude Include="Render.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="SpotLight.h" />
-    <ClInclude Include="String.h" />
-    <ClInclude Include="UnionGeometry.h" />
-    <ClInclude Include="Vector3D.h" />
+    <ClInclude Include="common\MyException.h" />
+    <ClInclude Include="common\MyMath.h" />
+    <ClInclude Include="common\MyString.h" />
+    <ClInclude Include="image\GaussianKernel.h" />
+    <ClInclude Include="image\ImageType.h" />
+    <ClInclude Include="image\IP.h" />
+    <ClInclude Include="image\Matrix.h" />
+    <ClInclude Include="image\PXMImage.h" />
+    <ClInclude Include="render\CheckerMaterial .h" />
+    <ClInclude Include="render\Color.h" />
+    <ClInclude Include="render\DirectionalLight.h" />
+    <ClInclude Include="render\Geometry.h" />
+    <ClInclude Include="render\IdealMaterial.h" />
+    <ClInclude Include="render\IntersectResult.h" />
+    <ClInclude Include="render\LambertMaterial.h" />
+    <ClInclude Include="render\Light.h" />
+    <ClInclude Include="render\LightSample.h" />
+    <ClInclude Include="render\Material.h" />
+    <ClInclude Include="render\PerspectiveCamera .h" />
+    <ClInclude Include="render\PhongMaterial.h" />
+    <ClInclude Include="render\Plane.h" />
+    <ClInclude Include="render\PointLight.h" />
+    <ClInclude Include="render\Ray3D.h" />
+    <ClInclude Include="render\Render.h" />
+    <ClInclude Include="render\Sphere.h" />
+    <ClInclude Include="render\SpotLight.h" />
+    <ClInclude Include="render\UnionGeometry.h" />
+    <ClInclude Include="render\Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

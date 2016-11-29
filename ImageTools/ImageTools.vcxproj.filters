@@ -5,99 +5,104 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{d2689e86-3a30-40fb-996d-59d92df6611d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="image">
+      <UniqueIdentifier>{f7312827-dd1f-491e-a512-bb8170ce9403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{ae3a445e-9cd4-4044-88d9-6873fe53810f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="String.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="common\MyMath.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="ImageType.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="common\MyString.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="Exception.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="common\MyException.h">
+      <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="image\GaussianKernel.h">
+      <Filter>image</Filter>
     </ClInclude>
-    <ClInclude Include="PXMImage.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="image\ImageType.h">
+      <Filter>image</Filter>
     </ClInclude>
-    <ClInclude Include="IP.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="image\IP.h">
+      <Filter>image</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="image\Matrix.h">
+      <Filter>image</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3D.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="image\PXMImage.h">
+      <Filter>image</Filter>
     </ClInclude>
-    <ClInclude Include="Ray3D.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\CheckerMaterial .h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Color.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="IntersectResult.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\DirectionalLight.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="PerspectiveCamera .h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Geometry.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\IdealMaterial.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\IntersectResult.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\LambertMaterial.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Light.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="CheckerMaterial .h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\LightSample.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="PhongMaterial.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Material.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\PerspectiveCamera .h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="UnionGeometry.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\PhongMaterial.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="LightSample.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Plane.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\PointLight.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Ray3D.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Render.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Sphere.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="LambertMaterial.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\SpotLight.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="IdealMaterial.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\UnionGeometry.h">
+      <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="GaussianKernel.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render\Vector3D.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
