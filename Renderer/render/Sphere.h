@@ -54,8 +54,8 @@ IntersectResult Sphere::intersect(const Ray3D& ray) const {
 	else if (-b + dets > eps) distance = -b + dets;
 	else return IntersectResult::noHit;
 
-	const Vector3D position = ray.getPoint(distance);
-	const Vector3D normal = (position - _center).norm();
+	Vector3D position = ray.getPoint(distance);
+	Vector3D normal = (position - _center).norm();
 
 	return IntersectResult(this, distance, position, normal);
 }

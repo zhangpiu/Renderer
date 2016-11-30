@@ -43,7 +43,7 @@ IntersectResult UnionGeometry::intersect(const Ray3D& ray) const {
 	IntersectResult minResult = IntersectResult::noHit;
 
 	for (auto& geometry : _geometries) {
-		auto result = geometry->intersect(ray);
+		IntersectResult&& result = geometry->intersect(ray);
 
 		if (result.getGeometry() && result.getDistance() < minDistance) {
 			minDistance = result.getDistance();

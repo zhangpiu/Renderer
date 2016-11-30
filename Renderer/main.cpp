@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 	
 	if (argc > 2) fileName = argv[2];
 
-	//globalIlluminationTest();
+	globalIlluminationTest();
 	//planeAndSphereTest();
 
 	//smallpt();
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
 	//pointLightTest();
 	//spotLightTest();
 	//renderRGBTest();
-	render36LightsTest();
+	//render36LightsTest();
 
 	return 0;
 }

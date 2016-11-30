@@ -189,7 +189,7 @@ Matrix<uint8> Render::renderLight(const Geometry& scene, const vector<shared_ptr
 
 
 Color Render::pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int depth, Random& rand) {
-	const auto result = scene.intersect(ray);
+	IntersectResult&& result = scene.intersect(ray);
 
 	// if miss, return black.
 	if (result.getGeometry() == nullptr) return Color::BLACK;

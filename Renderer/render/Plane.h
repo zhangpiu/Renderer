@@ -37,7 +37,7 @@ private:
 
 
 IntersectResult Plane::intersect(const Ray3D& ray) const {
-	const double a = ray.getDirection().dot(_normal);
+	double a = ray.getDirection().dot(_normal);
 	if (a >= 0) return IntersectResult::noHit;
 
 	double b = _normal.dot(ray.getOrigin() - _position);
