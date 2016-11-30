@@ -48,17 +48,11 @@ public:
 
 class Render {
 public:
-	static Matrix<uint8> renderDepth(const Geometry& scene, const PerspectiveCamera& camera, double maxDepth, const Size& size);
-
-	static Matrix<uint8> renderNormal(const Geometry& scene, const PerspectiveCamera& camera, const Size& size);
-
-	static Matrix<uint8> rayTrace(const Geometry& scene, const PerspectiveCamera& camera, const Size& size);
-
-	static Matrix<uint8> rayTraceReflection(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, int maxReflect, const Size& size);
+	static Matrix<uint8> rayTrace(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, int maxReflect, const Size& size);
 
 	static Matrix<uint8> renderLight(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, const Size& size);
 
-	static Matrix<uint8> pathTrace(const Geometry& scene, const PerspectiveCamera& camera, const Size& size);
+	static Matrix<uint8> pathTrace(const Geometry& scene, const PerspectiveCamera& camera, int samples, const Size& size);
 
 	static Color pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int depth, Random& rand);
 
@@ -66,90 +60,6 @@ private:
 	static Color rayTraceRecursive(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const Ray3D& ray, int maxReflect);
 
 };
-
-
-Matrix<uint8> Render::renderDepth(const Geometry& scene, const PerspectiveCamera& camera, double maxDepth, const Size& size) {
-	Matrix<uint8> m(size);
-
-	const int height = m.height();
-	const int width = m.width();
-
-	for (int i = 0; i < height; ++i) {
-		const double sy = i / double(height);
-
-		for (int j = 0; j < width; ++j) {
-			const double sx = j / double(width);
-			const Ray3D ray = camera.generateRay(sx, sy);
-			const IntersectResult result = scene.intersect(ray);
-
-			if (result.getGeometry()) {
-				uint8 depth = uint8(255 - std::min(result.getDistance()/maxDepth*255, 255.0));
-
-				m(i,j,0) = depth;
-				m(i,j,1) = depth;
-				m(i,j,2) = depth;
-			}
-		}
-	}
-
-	return std::move(m);
-}
-
-
-Matrix<uint8> Render::renderNormal(const Geometry& scene, const PerspectiveCamera& camera, const Size& size) {
-	Matrix<uint8> m(size);
-
-	const int height = m.height();
-	const int width = m.width();
-
-	for (int i = 0; i < height; ++i) {
-		const double sy = 1 - i / double(height);
-
-		for (int j = 0; j < width; ++j) {
-			const double sx = j / double(width);
-			const Ray3D ray = camera.generateRay(sx, sy);
-			const IntersectResult result = scene.intersect(ray);
-
-			if (result.getGeometry()) {
-				m(i, j, 0) = uint8((result.getNormal().x() + 1) * 128);
-				m(i, j, 1) = uint8((result.getNormal().y() + 1) * 128);
-				m(i, j, 2) = uint8((result.getNormal().z() + 1) * 128);
-			}
-		}
-	}
-
-	return std::move(m);
-}
-
-
-Matrix<uint8> Render::rayTrace(const Geometry& scene, const PerspectiveCamera& camera, const Size& size) {
-	Matrix<uint8> m(size);
-
-	const int height = m.height();
-	const int width = m.width();
-
-	for (int i = 0; i < height; ++i) {
-		const double sy = 1 - i / double(height);
-
-		for (int j = 0; j < width; ++j) {
-			const double sx = j / double(width);
-			const Ray3D ray = camera.generateRay(sx, sy);
-			const IntersectResult result = scene.intersect(ray);
-
-			if (result.getGeometry()) {
-				const Color clr; //= result.getGeometry()->getMaterial()->sample(ray, result.getPosition(), result.getNormal());
-
-				m(i, j, 0) = (uint8)Math::clip(clr.r * 255, 0.0, 255.0);
-				m(i, j, 1) = (uint8)Math::clip(clr.g * 255, 0.0, 255.0);
-				m(i, j, 2) = (uint8)Math::clip(clr.b * 255, 0.0, 255.0);
-			}
-		}
-	}
-
-
-	return std::move(m);
-}
-
 
 
 Color Render::rayTraceRecursive(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const Ray3D& ray, int maxReflect) {
@@ -183,7 +93,21 @@ Color Render::rayTraceRecursive(const Geometry& scene, const vector<shared_ptr<L
 }
 
 
-Matrix<uint8> Render::rayTraceReflection(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, int maxReflect, const Size& size) {
+/*------------------------------------------------------------------------------------------/
+| function:    rayTrace
+| description:
+|
+|
+| input:       @param scene:
+|              @param lights:
+|              @param camera:
+|              @param maxReflect:
+|              @param size:
+|
+| blog:        http://www.cnblogs.com/miloyip/archive/2010/03/29/1698953.html
+| note:        [10/28/2016 vodka]
+|-----------------------------------------------------------------------------------------*/
+Matrix<uint8> Render::rayTrace(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, int maxReflect, const Size& size) {
 	Matrix<uint8> m(size);
 
 	const int height = m.height();
@@ -209,7 +133,19 @@ Matrix<uint8> Render::rayTraceReflection(const Geometry& scene, const vector<sha
 }
 
 
-
+/*------------------------------------------------------------------------------------------/
+| function:    renderLight
+| description:
+|
+|
+| input:       @param scene:
+|              @param lights:
+|              @param camera:
+|              @param size:
+|
+| blog:        http://www.cnblogs.com/miloyip/archive/2010/04/02/1702768.html
+| note:        [10/28/2016 vodka]
+|-----------------------------------------------------------------------------------------*/
 Matrix<uint8> Render::renderLight(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const PerspectiveCamera& camera, const Size& size) {
 	Matrix<uint8> m(size);
 
@@ -240,8 +176,8 @@ Matrix<uint8> Render::renderLight(const Geometry& scene, const vector<shared_ptr
 				}
 
 				m(i, j, 0) = convert(clr.r);
-				m(i, j, 1) = convert(clr.r);
-				m(i, j, 2) = convert(clr.r);
+				m(i, j, 1) = convert(clr.g);
+				m(i, j, 2) = convert(clr.b);
 			}
 		}
 	}
@@ -334,7 +270,20 @@ Color Render::pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int de
 }
 
 
-Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& camera, const Size& size) {
+/*------------------------------------------------------------------------------------------/
+| function:    pathTrace
+| description:
+|
+|
+| input:       @param scene:
+|              @param camera:
+|              @param samples:
+|              @param size:
+|
+| blog:        http://www.cnblogs.com/miloyip/archive/2010/04/02/1702768.html
+| note:        [10/28/2016 vodka]
+|-----------------------------------------------------------------------------------------*/
+Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& camera, int samples, const Size& size) {
 	Matrix<uint8> m(size);
 
 	const int height = m.height();
@@ -342,16 +291,15 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
 	Random rand;
 
 	for (int i = 0; i < height; ++i) {
-		fprintf(stderr,"\rRendering %5.2f%%",100.*i/(height-1));
+		fprintf(stderr,"\rRendering (%dx4 = %d spp) %5.2f%%", samples, samples*4, 100.*i/(height-1));
 
 #pragma omp parallel for
 		for (int j = 0; j < width; ++j) {
 			Color clr, sum;
-			int samps = 10;
 
  			for (int sy = 0; sy < 2; ++sy) {
  				for (int sx = 0; sx < 2; ++sx) {
- 					for (int s = 0; s < samps; ++s) {
+ 					for (int s = 0; s < samples; ++s) {
  						double r1 = 2 * rand();
  						double r2 = 2 * rand();
  						double dx = r1 < 1 ? std::sqrt(r1) - 1 : 1 - std::sqrt(2 - r1);
@@ -359,7 +307,7 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
  
  						const Ray3D ray = camera.generateRay(((sx + 0.5 + dx) * 0.5 + j) / width, ((sy + 0.5 + dy) * 0.5 + height - 1 - i) / height);
  						
- 						clr += pathTraceRecursive(scene, ray, 0, rand) * (1.0 / samps);
+ 						clr += pathTraceRecursive(scene, ray, 0, rand) * (1.0 / samples);
  					}
  
  					sum += Color(Math::clip(clr.r, .0, 1.0), Math::clip(clr.g, .0, 1.0), Math::clip(clr.b, .0, 1.0)) * .25;
@@ -375,102 +323,3 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
 
 	return std::move(m);
 }
-
-
-
-
-
-
-void test() {
-
-	// Two spheres
-	auto sphere1 = make_shared<Sphere>(Vector3D(1e5+1,40.8,81.6),   1e5);   //Left
-	auto sphere2 = make_shared<Sphere>(Vector3D(-1e5+99,40.8,81.6), 1e5);	//Rght
-	auto sphere3 = make_shared<Sphere>(Vector3D(50, 40.8, 1e5),     1e5);   //Back
-	auto sphere4 = make_shared<Sphere>(Vector3D(50,40.8,-1e5+170),  1e5);  	//Frnt
-	auto sphere5 = make_shared<Sphere>(Vector3D(50, 1e5, 81.6),     1e5);	//Botm
-	auto sphere6 = make_shared<Sphere>(Vector3D(50,-1e5+81.6,81.6), 1e5);	//Top
-	auto sphere7 = make_shared<Sphere>(Vector3D(27,16.5,47),        16.5);	//Mirr
-	auto sphere8 = make_shared<Sphere>(Vector3D(73,16.5,78),        16.5);	//Glas
-	auto sphere9 = make_shared<Sphere>(Vector3D(50,681.6-.27,81.6), 600);	//Lite
-
-	sphere1->setMaterial(make_shared<IdealMaterial>(Color(.75, .25, .25), Color::BLACK, IdealType::DIFFUSE));    //Left
-	sphere2->setMaterial(make_shared<IdealMaterial>(Color(.25, .25, .75), Color::BLACK, IdealType::DIFFUSE));    //Rght
-	sphere3->setMaterial(make_shared<IdealMaterial>(Color(.75, .75, .75), Color::BLACK, IdealType::DIFFUSE));    //Back
-	sphere4->setMaterial(make_shared<IdealMaterial>(Color::BLACK,         Color::BLACK, IdealType::DIFFUSE));    //Frnt
-	sphere5->setMaterial(make_shared<IdealMaterial>(Color(.75, .75, .75), Color::BLACK, IdealType::DIFFUSE));    //Botm
-	sphere6->setMaterial(make_shared<IdealMaterial>(Color(.75, .75, .75), Color::BLACK, IdealType::DIFFUSE));    //Top
-	sphere7->setMaterial(make_shared<IdealMaterial>(Color::WHITE*.999,    Color::BLACK, IdealType::SPECULAR));   //Mirr
-	sphere8->setMaterial(make_shared<IdealMaterial>(Color::WHITE*.999,    Color::BLACK, IdealType::REFRACTIVE)); //Glas
-	sphere9->setMaterial(make_shared<IdealMaterial>(Color::BLACK,         Color::WHITE*12, IdealType::DIFFUSE)); //Lite
-
-	UnionGeometry geometries({ sphere1, sphere2, sphere3, sphere4, sphere5, sphere6, sphere7, sphere8, sphere9});
-
-
-	auto clamp = [](double x)->double {
-		if (x < 0)
-			return 0;
-		else if (x > 1)
-			return 1;
-		else
-			return x;
-	};
-
-	auto toInt = [&](double x) {
-		return int(pow(clamp(x), 1 / 2.2) * 255 + .5);
-	};
-
-	clock_t start = clock();
-
-	const int w = 256;
-	const int h = 256;
-
-	const int samps = 100; // # samples
-
-	const Ray3D cam(Vector3D(50, 52, 295.6), Vector3D(0, -0.042612, -1).norm()); // cam pos, dir
-	const Vector3D cx(w * .5135 / h, 0, 0);
-	const Vector3D cy = (cx.cross(cam.getDirection())).norm() * .5135;
-	Color* c = new Color[w * h]();
-
-//#pragma omp parallel for schedule(dynamic, 1)       // OpenMP
-	// Loop over image rows
-	for (int y = 0; y < h; y++) {
-		fprintf(stderr, "\rRendering (%d spp) %5.2f%%", samps * 4, 100.*y / (h - 1));
-		Random rand;
-
-		// Loop cols
-		for (unsigned short x = 0; x < w; x++) {
-			// 2x2 subpixel rows
-			for (int sy = 0; sy < 2; sy++) {
-				const int i = (h - y - 1) * w + x;
-
-				// 2x2 subpixel cols
-				for (int sx = 0; sx < 2; sx++) {
-					Color r = Color::BLACK;
-					for (int s = 0; s < samps; s++) {
-						double r1 = 2 * rand();
-						double r2 = 2 * rand();
-						double dx = r1 < 1 ? sqrt(r1) - 1 : 1 - sqrt(2 - r1);
-						double dy = r2 < 1 ? sqrt(r2) - 1 : 1 - sqrt(2 - r2);
-
-						Vector3D d = cx * (((sx + .5 + dx) / 2 + x) / w - .5) +
-							cy * (((sy + .5 + dy) / 2 + y) / h - .5) + cam.getDirection();
-
-						r = r + Render::pathTraceRecursive(geometries, Ray3D(cam.getOrigin() + d * 140, d.norm()), 0, rand) * (1.0 / samps);
-					}
-					c[i] = c[i] + Color(clamp(r.r), clamp(r.g), clamp(r.b)) * .25;
-				}
-			}
-		}
-	}
-
-	printf("\n%f sec\n", (float)(clock() - start) / CLOCKS_PER_SEC);
-
-	FILE *f = fopen("E:\\image.ppm", "w"); // Write image to PPM file.
-	fprintf(f, "P3\n%d %d\n%d\n", w, h, 255);
-	for (int i = 0; i < w * h; i++)
-		fprintf(f, "%d %d %d\n", toInt(c[i].r), toInt(c[i].g), toInt(c[i].b));
-	fclose(f);
-}
-
-

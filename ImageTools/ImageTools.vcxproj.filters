@@ -14,6 +14,9 @@
     <Filter Include="render">
       <UniqueIdentifier>{ae3a445e-9cd4-4044-88d9-6873fe53810f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{4df69c8f-ec03-43d9-8104-3fbf6fd39c4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\MyMath.h">
@@ -99,6 +102,15 @@
     </ClInclude>
     <ClInclude Include="render\Vector3D.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="test\LightTest.h">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\LocalIlluminationTest.h">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\GlobalIllumination.h">
+      <Filter>test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

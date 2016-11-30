@@ -9,6 +9,7 @@
 *.idb
 *.ilk
 *.sdf
+*.suo
 
 #########################################
 # Origin configurations
