@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1D5864BB-CA16-4B1F-AB9C-6964B6C54039}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ImageTools</RootNamespace>
+    <RootNamespace>Renderer</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

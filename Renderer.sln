@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageTools", "ImageTools\ImageTools.vcxproj", "{1D5864BB-CA16-4B1F-AB9C-6964B6C54039}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer", "Renderer\Renderer.vcxproj", "{1D5864BB-CA16-4B1F-AB9C-6964B6C54039}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

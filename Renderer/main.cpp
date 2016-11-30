@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 	
 	if (argc > 2) fileName = argv[2];
 
-	//globalIlluminationTest();
+	globalIlluminationTest();
 	//boxAndSphereTest();
 
 	//smallpt();
