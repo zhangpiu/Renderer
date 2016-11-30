@@ -7,7 +7,7 @@
   4. Image processing: 有关图像处理的工具，如 box blur, median blur, biliteral blur, etc.
   
 ## 一、Ray tracer
-![room](https://github.com/zhangpiu/Renderer/blob/master/pictures/room8h10000x4sample.png "room")
+![room](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/room8h10000x4sample.png "room")
 
 ### 1. Local Illumination
 &emsp; &ensp; 这里参考了`Milo`大神的两篇博文：[《用JavaScript玩转计算机图形学(一)光线追踪入门》](http://www.cnblogs.com/miloyip/archive/2010/03/29/1698953.html)，[《用JavaScript玩转计算机图形学(二)基本光源》](http://www.cnblogs.com/miloyip/archive/2010/04/02/1702768.html)。在原来的基础上加了一些改进，并用C++予以实现。以下展示一些渲染效果：
@@ -15,35 +15,35 @@
 #### 灯光渲染
 * 平行光光源
 
-![directionalLight](https://github.com/zhangpiu/Renderer/blob/master/pictures/directionalLight.png "Directional light")
+![directionalLight](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/directionalLight.png "Directional light")
 
 * 点光源
 
-![pointLight](https://github.com/zhangpiu/Renderer/blob/master/pictures/pointLight.png "Point light")
+![pointLight](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/pointLight.png "Point light")
 
 
 还可以添加多个光源
 
-![36lights](https://github.com/zhangpiu/Renderer/blob/master/pictures/36lights.png "36 lights")
+![36lights](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/36lights.png "36 lights")
 
 * 聚光灯光源
 
-![spotLight](https://github.com/zhangpiu/Renderer/blob/master/pictures/spotLight.png "Spot light")
+![spotLight](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/spotLight.png "Spot light")
 
 
 可以用聚光灯的效果渲染一个调色板
 
-![spotLightRGB](https://github.com/zhangpiu/Renderer/blob/master/pictures/spotLightRGB.png "RGB")
+![spotLightRGB](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/spotLightRGB.png "RGB")
 
 
 #### 场景渲染
 
-![spheres](https://github.com/zhangpiu/Renderer/blob/master/pictures/spheres.png "Spheres")
+![spheres](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/spheres.png "Spheres")
 
 
 ### 2. Global Illumination
 
 &emsp; &ensp; 这里的全局光照算法是基于Mento Carlo的路径追踪算法，参考了`Kevin Beason`大神的经典之作[《smallpt: Global Illumination in 99 lines of C++》](http://www.kevinbeason.com/smallpt/)，并作了一些改进。但由于加了一些类的封装等，有些对象的拷贝会增加额外的开销，本实现版本的速度其实不及原来的99行的实现，这里不准备再用牺牲可读性来换取时间的优化。
 
-![room](https://github.com/zhangpiu/Renderer/blob/master/pictures/room8h10000x4sample.png "room")
+![room](https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/room8h10000x4sample.png "room")
 
