@@ -33,6 +33,10 @@ public:
 
 	virtual IntersectResult intersect(const Ray3D& ray) const;
 
+	void add(const shared_ptr<Geometry>& geometry) { _geometries.push_back(geometry); }
+
+	vector<shared_ptr<Geometry>> getAll() const { return _geometries; }
+
 private:
 	vector<shared_ptr<Geometry>> _geometries;
 };

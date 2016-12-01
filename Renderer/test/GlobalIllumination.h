@@ -200,3 +200,110 @@ void globalIlluminationAnimation() {
 		PXMImage::save(mat, filename);
 	}
 }
+
+
+Matrix<uint8> renderICM(const Size& size, int samples) {
+	auto plane1 = make_shared<Plane>(Vector3D(0, 0, 1),    0);    // ground
+	auto plane2 = make_shared<Plane>(Vector3D(1, 0, 0),  -100);   // back
+	auto plane3 = make_shared<Plane>(Vector3D(0, 1, 0),  -60);    // left
+	auto plane4 = make_shared<Plane>(Vector3D(0, -1, 0), -60);    // right
+	auto plane5 = make_shared<Plane>(Vector3D(0, 0, -1), -100);   // ceil
+	auto plane6 = make_shared<Plane>(Vector3D(-1, 0, 0), -20);    // front
+
+	plane1->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.75, 0.75), Color::BLACK, IdealType::DIFFUSE));
+	plane2->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.75, 0.75), Color::BLACK, IdealType::DIFFUSE));
+	plane3->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.25, 0.25), Color::BLACK, IdealType::DIFFUSE));
+	plane4->setMaterial(make_shared<IdealMaterial>(Color(0.25, 0.25, 0.75), Color::BLACK, IdealType::DIFFUSE));
+	plane5->setMaterial(make_shared<IdealMaterial>(Color(0.75, 0.75, 0.75), Color::BLACK, IdealType::DIFFUSE));
+	plane6->setMaterial(make_shared<IdealMaterial>(Color(0.50, 0.84, 0.81), Color::BLACK, IdealType::DIFFUSE));
+
+	auto sphere1 = make_shared<Sphere>(Vector3D(-60, -27.5, 20), 20);
+	auto sphere2 = make_shared<Sphere>(Vector3D(-45, 30, 20), 20);
+	auto sphere3 = make_shared<Sphere>(Vector3D(-50, 0, 100 + 97), 100); // light
+
+	sphere1->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::SPECULAR));
+	sphere2->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+	sphere3->setMaterial(make_shared<IdealMaterial>(Color(.75, .75, .75), Color(7.5, 7.5, 7.5), IdealType::DIFFUSE));
+
+	UnionGeometry geometries({ plane1, plane2, plane3, plane4, plane5, plane6, sphere1, sphere2, sphere3 });
+
+	double charX = 0, charY = 0, charZ = 70, r = 2;
+
+	// I 
+	for (int i = 0; i < 6; ++i) {
+		auto ball = make_shared<Sphere>(Vector3D(charX, -30 + charY, charZ - i*r*2), r);
+		ball->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+		geometries.add(ball);
+	}
+
+	// C
+	double R = 10, theta1 = Math::PI / 4., theta2 = Math::PI * 7 / 4.;
+	double delta = 2*r/R;
+
+	for (double theta = theta1; theta < Math::PI; theta += delta) {
+		auto ball = make_shared<Sphere>(Vector3D(charX, -8 + charY + (R+1) * cos(theta), charZ-R + (R+1)*sin(theta)), r);
+		ball->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+		geometries.add(ball);
+	}
+
+	auto ball = make_shared<Sphere>(Vector3D(charX, -8 + charY + (R+1) * cos(Math::PI), charZ - R + (R+1)*sin(Math::PI)), r);
+	ball->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+	geometries.add(ball);
+
+	for (double theta = theta2; theta > Math::PI; theta -= delta) {
+		auto ball = make_shared<Sphere>(Vector3D(charX, -8 + charY + (R+1) * cos(theta), charZ - R + (R+1)*sin(theta)), r);
+		ball->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+		geometries.add(ball);
+	}
+
+	// M
+	double mw = R*2;
+	for (int i = 0; i < 6; ++i) {
+		auto ball1 = make_shared<Sphere>(Vector3D(charX, 10 + charY, charZ - i*r * 2), r);
+		ball1->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+
+		auto ball2 = make_shared<Sphere>(Vector3D(charX, 10 + mw + charY, charZ - i*r * 2), r);
+		ball2->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+		
+		geometries.add(ball1);
+		geometries.add(ball2);
+	}
+
+	// ╧у╫га╫©е
+	auto ball1 = make_shared<Sphere>(Vector3D(charX, 12 + charY, charZ-1), 2);
+	ball1->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+
+	auto ball2 = make_shared<Sphere>(Vector3D(charX, 28 + charY, charZ-1), 2);
+	ball2->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+
+	// ╧у╫гр╩©е
+	auto ball3 = make_shared<Sphere>(Vector3D(charX, 10 + mw / 2 + charY, 54), 2);
+	ball3->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+
+	geometries.add(ball1);
+	geometries.add(ball2);
+	geometries.add(ball3);
+
+	int num = 5;
+	for (int i = 1; i <= num; ++i) {
+		auto ball1 = make_shared<Sphere>(Vector3D(charX, 10 + mw/2 + charY - i*8./num, 54 + i*15./(num)), 2);
+		ball1->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+
+		auto ball2 = make_shared<Sphere>(Vector3D(charX, 10 + mw/2 + charY + i*8./num, 54 + i*15./(num)), 2);
+		ball2->setMaterial(make_shared<IdealMaterial>(Color(1, 1, 1), Color::BLACK, IdealType::REFRACTIVE));
+
+		geometries.add(ball1);
+		geometries.add(ball2);
+	}
+
+	clock_t start = clock();
+
+	Matrix<uint8> mat = Render::pathTrace(geometries,
+										  PerspectiveCamera(Vector3D(150, 0, 50), Vector3D(-1, 0, 0), Vector3D(0, 0, 1), 37, (1.0 * size.width()) / size.height()),
+										  samples,
+										  size);
+
+	printf("\n%f sec\n", (float)(clock() - start) / CLOCKS_PER_SEC);
+
+	return mat;
+}
