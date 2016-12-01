@@ -22,7 +22,7 @@
 
 class PerspectiveCamera {
 public:
-	PerspectiveCamera(const Vector3D& eye, const Vector3D& front, const Vector3D& up, double fov, double w_h = 1)
+	PerspectiveCamera(const Vector3D& eye, const Vector3D& front, const Vector3D& up, double fov, double w_divide_h)
 		: _eye(eye)
 		, _front(front.norm())
 		, _refUp(up.norm())
@@ -30,12 +30,12 @@ public:
 		_right = _front.cross(_refUp);
 		_up = _right.cross(_front);
 
-		if (w_h < 1) {
+		if (w_divide_h < 1) {
 			_fovScaleH = std::tan(_fov*0.5*Math::PI / 180) * 2;
-			_fovScaleV = _fovScaleH / w_h;
+			_fovScaleV = _fovScaleH / w_divide_h;
 		} else {
 			_fovScaleV = std::tan(_fov*0.5*Math::PI / 180) * 2;
-			_fovScaleH = _fovScaleV * w_h;
+			_fovScaleH = _fovScaleV * w_divide_h;
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include "LocalIlluminationTest.h"
 #include "GlobalIllumination.h"
 
+
 int main(int argc, char *argv[]){
 	int samples = 10;
 	string fileName = "Render.ppm";
@@ -12,7 +13,8 @@ int main(int argc, char *argv[]){
 	
 	if (argc > 2) fileName = argv[2];
 
-	globalIlluminationTest();
+
+	//globalIlluminationTest();
 	//planeAndSphereTest();
 
 	//smallpt();

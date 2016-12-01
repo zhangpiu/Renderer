@@ -66,7 +66,7 @@ void smallpt() {
 	const Vector3D cy = (cx.cross(cam.getDirection())).norm() * .5135;
 	Color* c = new Color[w * h]();
 
-//#pragma omp parallel for schedule(dynamic, 1)       // OpenMP
+#pragma omp parallel for schedule(dynamic, 1)       // OpenMP
 	// Loop over image rows
 	for (int y = 0; y < h; y++) {
 		fprintf(stderr, "\rRendering (%d spp) %5.2f%%", samps * 4, 100.*y / (h - 1));

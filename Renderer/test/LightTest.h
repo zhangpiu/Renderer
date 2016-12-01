@@ -103,7 +103,7 @@ void renderRGBTest() {
 	Matrix<uint8> mat =
 		Render::renderLight(geometries,
 		lights,
-		PerspectiveCamera(Vector3D(25, 25, 25), Vector3D(-1, -1, -1), Vector3D(0, 0, 1), 60),
+		PerspectiveCamera(Vector3D(25, 25, 25), Vector3D(-1, -1, -1), Vector3D(0, 0, 1), 60, 1),
 		Size(h, w, 3));
 
 	PXMImage::save(mat, "E:\\render.ppm");

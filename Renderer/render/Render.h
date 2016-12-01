@@ -290,10 +290,10 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
 	const int width = m.width();
 	Random rand;
 
+#pragma omp parallel for schedule(dynamic, 1)
 	for (int i = 0; i < height; ++i) {
 		fprintf(stderr,"\rRendering (%dx4 = %d spp) %5.2f%%", samples, samples*4, 100.*i/(height-1));
 
-#pragma omp parallel for
 		for (int j = 0; j < width; ++j) {
 			Color clr, sum;
 
