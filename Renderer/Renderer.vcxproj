@@ -70,6 +70,9 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\win32\Debug\</OutDir>
     <IntDir>$(SolutionDir)\win32\Debug\</IntDir>
+    <IncludePath />
+    <LibraryPath />
+    <LibraryWPath />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -92,6 +95,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>test;image;render;common</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

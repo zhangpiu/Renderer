@@ -19,6 +19,8 @@
 #include <cstdarg>   // For va_start, etc.
 #include <memory>    // For std::unique_ptr
 #include <string>
+#include <cstring>
+#include <cmath>
 
 
 class String{
@@ -65,7 +67,7 @@ String String::format(const std::string formatString, ...) {
 		va_end(ap);
 
 		if (final_n < 0 || final_n >= n)
-			n += abs(final_n - n + 1);
+			n += std::abs(final_n - n + 1);
 		else
 			break;
 	}

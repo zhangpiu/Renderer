@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <tuple>
+#include <cstring>
 
 using uint8 = unsigned char;
 using uint16 = unsigned short;
@@ -120,7 +121,8 @@ public:
 
 	T* data() const { return _data; }
 
-	friend Size size(const Matrix<T>& m);
+	template<typename U>
+	friend Size size(const Matrix<U>& m);
 
 	bool identical(const Matrix<T>& rhs) const { return this == &rhs; }
 
@@ -170,7 +172,7 @@ void Matrix<T>::swap(Matrix<T>& rhs) {
 	std::swap(_length, rhs._length);
 }
 
-template<typename T>
-Size size(const Matrix<T>& m) { 
+template<typename U>
+Size size(const Matrix<U>& m) { 
 	return Size(m.height(), m.width(), m.channel); 
 }

@@ -18,6 +18,7 @@
 
 #include "MyMath.h"
 #include "GaussianKernel.h"
+#include <algorithm>
 
 class IP {
 public:
@@ -245,8 +246,8 @@ void IP::gaussianBlurBruteForce(const Matrix<T>& imInput, Matrix<T>& imOutput, i
 
 				for (int di = -radius; di <= radius; ++di) {
 					for (int dj = -radius; dj <= radius; ++dj) {
-						const int row = CLIP(i + di, 0, height - 1);
-						const int col = CLIP(j + dj, 0, width - 1);
+						const int row = Math::clip(i + di, 0, height - 1);
+						const int col = Math::clip(j + dj, 0, width - 1);
 
 						sum += imInput(row, col, k) * kernel(di, dj);
 					}
@@ -483,8 +484,8 @@ void IP::bilateralBlurBruteForce(const Matrix<T>& imInput, Matrix<T>& imOutput, 
 
 				for (int di = -radius; di <= radius; ++di) {
 					for (int dj = -radius; dj <= radius; ++dj) {
-						const int row = CLIP(i + di, 0, height - 1);
-						const int col = CLIP(j + dj, 0, width - 1);
+						const int row = Math::clip(i + di, 0, height - 1);
+						const int col = Math::clip(j + dj, 0, width - 1);
 						const double r = exp(-pow(imInput(i, j, k) - imInput(row, col, k), 2) / (2 * sigmaR*sigmaR));
 						const double w = kernel(di, dj) * r;
 
