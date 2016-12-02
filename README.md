@@ -8,7 +8,7 @@
   4. Image processing: 有关图像处理的工具，如 box blur, median blur, biliteral blur, etc.
   
 ## 一、Ray tracer
-<p align="center"> <img src="https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/room8h10000x4sample.png" alt="room" title="room" /> </p>
+<p align="center"> <img src="https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/icm15_6h10000x4sample.png" alt="icm" title="icm" /> </p>
 
 ### 1. Local Illumination
 &emsp; &ensp; 这里参考了`Milo`大神的两篇博文：[《用JavaScript玩转计算机图形学(一)光线追踪入门》](http://www.cnblogs.com/miloyip/archive/2010/03/29/1698953.html)，[《用JavaScript玩转计算机图形学(二)基本光源》](http://www.cnblogs.com/miloyip/archive/2010/04/02/1702768.html)。在原来的基础上加了一些改进，并用C++予以实现。以下展示一些渲染效果：
@@ -44,3 +44,4 @@
 
 <p align="center"> <img src="https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/room8h10000x4sample.png" alt="room" title="room" /> </p>
 
+<p align="center"> <img src="https://raw.githubusercontent.com/zhangpiu/Renderer/master/pictures/icm15_6h10000x4sample.png" alt="icm" title="icm" /> </p>
