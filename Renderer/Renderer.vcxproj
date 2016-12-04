@@ -191,6 +191,7 @@
     <ClInclude Include="render\PhongMaterial.h" />
     <ClInclude Include="render\Plane.h" />
     <ClInclude Include="render\PointLight.h" />
+    <ClInclude Include="render\RandomLCG.h" />
     <ClInclude Include="render\Ray3D.h" />
     <ClInclude Include="render\Render.h" />
     <ClInclude Include="render\Sphere.h" />

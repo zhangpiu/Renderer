@@ -112,6 +112,9 @@
     <ClInclude Include="test\GlobalIllumination.h">
       <Filter>test</Filter>
     </ClInclude>
+    <ClInclude Include="render\RandomLCG.h">
+      <Filter>render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

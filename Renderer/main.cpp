@@ -20,9 +20,11 @@ int main(int argc, char *argv[]){
 
 	if (argc > 4) filename = argv[4];
 
-	auto mat = renderICM(size, samples);
+	Matrix<uint8> mat;
 
-	//globalIlluminationTest();
+	//mat = renderICM(size, samples);
+
+	mat = globalIlluminationTest(size, samples);
 	//planeAndSphereTest();
 
 	//smallpt();

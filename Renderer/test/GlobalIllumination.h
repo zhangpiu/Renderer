@@ -108,7 +108,7 @@ void smallpt() {
 	delete[] c;
 }
 
-void globalIlluminationTest() {
+Matrix<uint8> globalIlluminationTest(const Size& size, int samples) {
 	auto plane1 = make_shared<Plane>(Vector3D(0, 0, 1),    0);    // ground
 	auto plane2 = make_shared<Plane>(Vector3D(1, 0, 0),  -100);  // back
 	auto plane3 = make_shared<Plane>(Vector3D(0, 1, 0),  -60);  // left
@@ -133,20 +133,16 @@ void globalIlluminationTest() {
 
 	UnionGeometry geometries({ plane1, plane2, plane3, plane4, plane5, plane6, sphere1, sphere2, sphere3 });
 
-	int w = 1024;
-	int h = 768;
-	int samps = 10;
-
 	clock_t start = clock();
 
 	Matrix<uint8> mat = Render::pathTrace(geometries,
-										  PerspectiveCamera(Vector3D(150, 0, 50), Vector3D(-1, 0, 0), Vector3D(0, 0, 1), 37, (1.0 * w) / h),
-										  samps,
-										  Size(h, w, 3));
+										  PerspectiveCamera(Vector3D(150, 0, 50), Vector3D(-1, 0, 0), Vector3D(0, 0, 1), 37, (1.0 * size.width()) / size.height()),
+										  samples,
+										  size);
 
 	printf("\n%f sec\n", (float)(clock() - start) / CLOCKS_PER_SEC);
 
-	PXMImage::save(mat, "E:\\render.ppm");
+	return mat;
 }
 
 void globalIlluminationAnimation() {
