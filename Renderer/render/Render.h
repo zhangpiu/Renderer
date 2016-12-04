@@ -23,6 +23,7 @@
 #include "Light.h"
 #include "IdealMaterial.h"
 #include "UnionGeometry.h"
+#include "RandomLCG.h"
 
 #include <algorithm>
 #include <ctime>
@@ -54,7 +55,7 @@ public:
 
 	static Matrix<uint8> pathTrace(const Geometry& scene, const PerspectiveCamera& camera, int samples, const Size& size);
 
-	static Color pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int depth, Random& rand);
+	static Color pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int depth, RandomLCG& rand);
 
 private:
 	static Color rayTraceRecursive(const Geometry& scene, const vector<shared_ptr<Light>>& lights, const Ray3D& ray, int maxReflect);
@@ -188,7 +189,7 @@ Matrix<uint8> Render::renderLight(const Geometry& scene, const vector<shared_ptr
 
 
 
-Color Render::pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int depth, Random& rand) {
+Color Render::pathTraceRecursive(const Geometry& scene, const Ray3D& ray, int depth, RandomLCG& rand) {
 	IntersectResult&& result = scene.intersect(ray);
 
 	// if miss, return black.
@@ -288,11 +289,12 @@ Matrix<uint8> Render::pathTrace(const Geometry& scene, const PerspectiveCamera& 
 
 	const int height = m.height();
 	const int width = m.width();
-	Random rand;
 
 #pragma omp parallel for schedule(dynamic, 1)
 	for (int i = 0; i < height; ++i) {
 		fprintf(stderr,"\rRendering (%dx4 = %d spp) %5.2f%%", samples, samples*4, 100.*i/(height-1));
+
+		RandomLCG rand(i);
 
 		for (int j = 0; j < width; ++j) {
 			Color clr, sum;

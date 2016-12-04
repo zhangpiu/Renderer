@@ -70,7 +70,7 @@ void smallpt() {
 	// Loop over image rows
 	for (int y = 0; y < h; y++) {
 		fprintf(stderr, "\rRendering (%d spp) %5.2f%%", samps * 4, 100.*y / (h - 1));
-		Random rand;
+		RandomLCG rand(y);
 
 		// Loop cols
 		for (unsigned short x = 0; x < w; x++) {

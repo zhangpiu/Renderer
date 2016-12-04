@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]){
 	string filename = "Render.ppm";
-	int samples = 10, w = 800, h = 600;
+	int samples = 10, w = 1024, h = 768;
 	Size size(h, w, 3);
 
 	if (argc > 1) samples = atoi(argv[1]);
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
 	//render36LightsTest();
 
 
-	PXMImage::save(mat, filename);
+	//PXMImage::save(mat, filename);
 
 	return 0;
 }
