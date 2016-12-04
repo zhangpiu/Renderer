@@ -29,6 +29,10 @@ public:
 
 	virtual IntersectResult intersect(const Ray3D& ray) const = 0;
 
+	virtual double calcDistance(const Ray3D& ray) const = 0;
+
+	virtual pair<Vector3D, Vector3D> calcPositionAndNormal(const Ray3D& ray, double distance) const = 0;
+
 	virtual ~Geometry(){}
 
 	const std::shared_ptr<Material>& getMaterial() const { return _material; }

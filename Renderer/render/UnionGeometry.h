@@ -33,6 +33,10 @@ public:
 
 	virtual IntersectResult intersect(const Ray3D& ray) const;
 
+	virtual double calcDistance(const Ray3D& ray) const { throw Exception("Illegal function call: 'UnionGeometry' is an abstract class!"); }
+
+	virtual pair<Vector3D, Vector3D> calcPositionAndNormal(const Ray3D& ray, double distance) const { throw Exception("Illegal function call: 'UnionGeometry' is an abstract class!"); }
+
 	void add(const shared_ptr<Geometry>& geometry) { _geometries.push_back(geometry); }
 
 	vector<shared_ptr<Geometry>> getAll() const { return _geometries; }
@@ -43,17 +47,34 @@ private:
 
 
 IntersectResult UnionGeometry::intersect(const Ray3D& ray) const {
-	double minDistance = std::numeric_limits<double>::max();
-	IntersectResult minResult = IntersectResult::noHit;
+// 	double minDistance = std::numeric_limits<double>::max();
+// 	IntersectResult minResult = IntersectResult::noHit;
+// 
+// 	for (auto& geometry : _geometries) {
+// 		IntersectResult&& result = geometry->intersect(ray);
+// 
+// 		if (result.getGeometry() && result.getDistance() < minDistance) {
+// 			minDistance = result.getDistance();
+// 			minResult = result;
+// 		}
+// 	}
+// 
+// 	return minResult;
 
-	for (auto& geometry : _geometries) {
-		IntersectResult&& result = geometry->intersect(ray);
+	double minDist = std::numeric_limits<double>::max();
+	int idx = -1;
 
-		if (result.getGeometry() && result.getDistance() < minDistance) {
-			minDistance = result.getDistance();
-			minResult = result;
+	for (size_t i = 0; i < _geometries.size(); ++i) {
+		double dist = _geometries[i]->calcDistance(ray);
+		if (dist < minDist) {
+			minDist = dist;
+			idx = (int)i;
 		}
 	}
 
-	return minResult;
+	if (idx == -1) return IntersectResult::noHit;
+	else {
+		auto&& r = _geometries[idx]->calcPositionAndNormal(ray, minDist);
+		return IntersectResult(_geometries[idx].get(), minDist, r.first, r.second);
+	}
 }

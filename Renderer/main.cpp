@@ -38,7 +38,9 @@ int main(int argc, char *argv[]){
 	//render36LightsTest();
 
 
-	//PXMImage::save(mat, filename);
+	PXMImage::save(mat, filename);
+
+	
 
 	return 0;
 }
